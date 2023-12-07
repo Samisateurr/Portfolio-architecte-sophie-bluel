@@ -1,66 +1,70 @@
-// URL de l'API pour recuperer les works
-const apiWorks = 'http://localhost:5678/api/works';
+async function getWorks() {
+    let url = 'http://localhost:5678/api/works';
+    try {
+        let res = await fetch(url);
+        return await res.json();
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-// Div avec l'ID "gallery" dans l'HTML pour pouvoir afficher les éléments.
-const galleryDiv = document.getElementById('gallery');
+async function renderWorks() {
+    let works = await getWorks();
+    let html = '';
+    works.forEach(work => {
+        let htmlSegment = `<figure>
+                                  <img src="${work.imageUrl}" alt="${work.title}">
+                                  <figcaption>${work.title}</figcaption>
+                               </figure>`;
 
-// Utiliser Fetch pour effectuer une requête GET
-fetch(apiWorks)
-    .then(response => {
-        // Vérifier si la requête a réussi (statut 200)
-        if (!response.ok) {
-            throw new Error(`Erreur HTTP! Statut: ${response.status}`);
-        }
-        // Réponse JSON
-        return response.json();
-    })
-    .then(data => {
-        // Parcourir les éléments dans la réponse du serveur
-        data.forEach(item => {
-            // Créer un élément figure
-            const figureElement = document.createElement('figure');
-
-            // Créer un élément d'image + alt image
-            const imageElement = document.createElement('img');
-            imageElement.src = item.imageUrl;
-            imageElement.alt = item.title;
-
-            // Créer un élément figcaption avec le titre du projet
-            const figcaptionElement = document.createElement('figcaption');
-            figcaptionElement.textContent = item.title;
-
-            // Ajouter l'image et le figcaption à la figure
-            figureElement.appendChild(imageElement);
-            figureElement.appendChild(figcaptionElement);
-
-            // Ajouter la figure à la galerie
-            galleryDiv.appendChild(figureElement);
-        });
-    })
-
-
-    // Message d'erreur si les données ne peuvent être récupérées
-    .catch(error => {
-        console.error('Erreur lors de la récupération des données:', error);
+        html += htmlSegment;
     });
 
-// URL de l'API pour récupérer les catégories
-const apiCategories = 'http://localhost:5678/api/categories';
+    let galleryDiv = document.getElementById('gallery');
+    galleryDiv.innerHTML = html;
+}
 
-// Utiliser Fetch pour effectuer une requête GET
-fetch(apiCategories)
-    .then(response => {
-        // Vérifier si la requête a réussi (statut 200)
-        if (!response.ok) {
-            throw new Error(`Erreur HTTP! Statut: ${response.status}`);
-        }
-        // Réponse JSON
-        return response.json();
-    })
-    .then(categories => {
-        // Les categories sont recuperes
-        console.log(categories);
-    })
-    .catch(error => {
-        console.error('Erreur lors de la récupération des catégories:', error);
+// Appeler la fonction pour afficher les Works
+renderWorks();
+
+async function getCategories() {
+    let url = 'http://localhost:5678/api/categories';
+    try {
+        let res = await fetch(url);
+        return await res.json();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function renderCategories() {
+    let categories = await getCategories();
+    let html = '';
+
+    // Ajouter le bouton "Tous"
+    html += `<button class="categoryButton" data-category-id="all">Tous</button>`;
+
+
+
+    // Ajouter les boutons pour chaques categories
+    categories.forEach(category => {
+        let htmlSegment = `<button class="categoryButton" data-category-id="${category.id}">${category.name}</button>`;
+        html += htmlSegment;
     });
+
+
+    let buttonsDiv = document.getElementById('buttons');
+    buttonsDiv.innerHTML = html;
+
+    // Ajouter EventListener pour chaque button
+    document.querySelectorAll('.categoryButton').forEach(button => {
+        button.addEventListener('click', categoryButtonClick);
+    });
+
+    // Appel pour afficher tous les works au chargement de la page
+    renderWorks();
+}
+
+
+// Appeler la fonction pour afficher les categories
+renderCategories();
