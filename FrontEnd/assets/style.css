@@ -93,6 +93,7 @@ nav ul {
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
+	cursor: pointer;
 }
 
 li:hover {
@@ -212,3 +213,61 @@ footer nav ul {
 	margin: 2em
 }
 
+/* Pour la page de login */
+
+#login {
+	width: 40%;
+    margin: auto;
+	padding-top: 50px;
+	padding-bottom: 160px;
+}
+
+#login form {
+	text-align: left;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+#login input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+#login label {
+	margin: 2em 0 0.3em 0;
+}
+
+#login a {
+	display: flex;
+	justify-content: center;
+	color: black;
+	font-weight: 500;
+}
+
+#login a:hover {
+	color: #B1663C;
+}
+
+#login h2 {
+	display: flex;
+	justify-content: center;
+}
+
+#login textarea {
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+#login input[type="submit"]{
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	margin : 2em auto ;
+	width: 190px;
+	text-align: center;
+	border-radius: 60px ;
+}
