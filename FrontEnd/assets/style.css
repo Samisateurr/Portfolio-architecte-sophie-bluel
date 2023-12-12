@@ -30,6 +30,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: #fffef8;
 }
 ol, ul {
 	list-style: none;
@@ -60,6 +61,15 @@ header {
 }
 section {
 	margin: 50px 0
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+a:hover {
+	color:#B1663C
 }
 
 h1{
@@ -151,7 +161,7 @@ li:hover {
     margin: 5px;
 	border: 2px solid #1D6154;
     border-radius: 20px; 
-    background-color: #ffffff; 
+    background-color: #fffef8; 
 	font-family: 'Work Sans';
 	font-size: 17px;
 	font-weight: bolder;
@@ -161,7 +171,7 @@ li:hover {
 
 #buttons button:hover {
     background-color: #1D6154; 
-	color: #ffffff;
+	color: #fffef8;
 }
 
 #contact {
