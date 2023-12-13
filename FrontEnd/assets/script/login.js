@@ -49,3 +49,5 @@ loginButton.addEventListener('click', function (event) {
     // Appeller la fonction login lorsque le bouton est cliqué
     login();
 });
+
+

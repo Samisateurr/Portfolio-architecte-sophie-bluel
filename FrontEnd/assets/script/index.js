@@ -30,10 +30,10 @@ async function filterWorks(categoryId) {
     if (categoryId === 'all') {
         worksToDisplay = allWorks;
     } else {
-         // Filtrez les œuvres par catégorie
-         worksToDisplay = allWorks.filter(work => work.categoryId && String(work.categoryId) === String(categoryId));
-        }
-        
+        // Filtrez les œuvres par catégorie
+        worksToDisplay = allWorks.filter(work => work.categoryId && String(work.categoryId) === String(categoryId));
+    }
+
     renderWorks(worksToDisplay);
 }
 
@@ -88,3 +88,40 @@ async function initialize() {
 
 // Appeler la fonction d'initialisation
 initialize();
+
+//Maintenant je suis connecte
+
+// Vérifier la connexion au chargement de la page
+document.addEventListener("DOMContentLoaded", function () {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+        console.log('Token stocké :', token);
+        // Je suis connecté
+        updatePageForUser();
+    }
+});
+
+// Fonction pour faire les changements sur la page lorsque je suis connecté
+function updatePageForUser() {
+    // Modifier le texte du bouton de connexion
+    const loginButton = document.getElementById('loginButton');
+    if (loginButton) {
+        loginButton.textContent = 'logout';
+    }
+
+    // Masquer les boutons de filtre
+    const filterButtonsContainer = document.getElementById('buttons');
+    if (filterButtonsContainer) {
+        filterButtonsContainer.style.display = 'none';
+    }
+}
+
+// Fonction de déconnexion
+function logout() {
+    // Supprimer le token du local storage
+    localStorage.removeItem('token');
+
+    // Rediriger vers la page de login
+    window.location.href = 'login.html';
+}
