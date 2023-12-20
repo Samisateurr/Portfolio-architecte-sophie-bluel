@@ -1,5 +1,8 @@
 let allWorks; // Variable pour stocker toutes les œuvres
 
+// Ajouter un EventListener au bouton de déconnexion
+const logoutButton = document.getElementById('log-button');
+
 async function getWorks() {
     let url = 'http://localhost:5678/api/works';
     try {
@@ -102,26 +105,51 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// Fonction pour faire les changements sur la page lorsque je suis connecté
-function updatePageForUser() {
-    // Modifier le texte du bouton de connexion
-    const loginButton = document.getElementById('loginButton');
-    if (loginButton) {
-        loginButton.textContent = 'logout';
-    }
-
-    // Masquer les boutons de filtre
-    const filterButtonsContainer = document.getElementById('buttons');
-    if (filterButtonsContainer) {
-        filterButtonsContainer.style.display = 'none';
-    }
-}
-
 // Fonction de déconnexion
 function logout() {
     // Supprimer le token du local storage
     localStorage.removeItem('token');
-
     // Rediriger vers la page de login
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
 }
+
+// Fonction pour faire les changements sur la page lorsque je suis connecté
+function updatePageForUser() {
+    // Modifier le texte du bouton de connexion
+    const loginButton = document.getElementById('log-button');
+    // Stockage du token
+    const token = localStorage.getItem('token');
+    // Boutons de filtre
+    const filterButtonsContainer = document.getElementById('buttons');
+    // Bandeau noir Mode Edition
+    const adminBanner = document.getElementById('admin-banner');
+    if (token) {
+        loginButton.textContent = 'Logout';
+        filterButtonsContainer.style.display = 'none';
+        adminBanner.style.display = 'block';
+    }
+}
+
+
+
+function initEventListener() {
+    // Ajout de l'EventListener pour le bouton "se connecter"
+    loginButton.addEventListener('click', function (event) {
+        // Empecher le rechargement de la page
+        event.preventDefault();
+        // Appeller la fonction login lorsque le bouton est cliqué
+        login();
+    });
+    logoutButton.addEventListener('click', logout);
+}
+
+
+
+
+function init() {
+    initEventListener();
+    updatePageForUser();
+}
+
+init();
+
