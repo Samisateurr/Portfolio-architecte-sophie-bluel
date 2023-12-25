@@ -17,11 +17,13 @@
 </head>
 
 <body>
+
 	<header>
 		<div id="admin-banner" style="display: none;">
 			<div class="content-banner"><i class="fa solid fa-pen-to-square"></i>
-			<p>Mode édition</p></div>
+				<p>Mode édition</p>
 			</div>
+		</div>
 
 		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 		<nav>
@@ -34,6 +36,16 @@
 		</nav>
 	</header>
 	<main>
+		<!-- Modal Container -->
+		<div id="myModal" class="modal">
+
+			<!-- Contenu de la modal -->
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<p>Contenu de la modal...</p>
+			</div>
+
+		</div>
 		<section id="introduction">
 			<figure>
 				<img src="./assets/images/sophie-bluel.png" alt="">
@@ -51,6 +63,13 @@
 		</section>
 		<section id="portfolio">
 			<h2>Mes Projets</h2>
+			<button id="modify-button">
+				<div><i class="fa solid fa-pen-to-square"></i></div>
+				<div>
+					<p>Modifier</p>
+				</div>
+			</button>
+			</div>
 
 			<div id="buttons">
 			</div>

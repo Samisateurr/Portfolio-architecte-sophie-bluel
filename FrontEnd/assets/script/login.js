@@ -52,7 +52,7 @@ function logout() {
     localStorage.removeItem('token');
 
     // Rediriger vers la page de login
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
 }
 
 // Fonction pour faire les changements sur la page lorsque je suis connecté
@@ -65,7 +65,7 @@ function updatePageForUser() {
     }
 }
 
-// Fonction pour initier tout les EventListener 
+// Fonction pour initier  les EventListener 
 function initEventListener() {
     // Ajout de l'EventListener pour le bouton "se connecter"
     loginButton.addEventListener('click', function (event) {

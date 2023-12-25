@@ -123,10 +123,17 @@ function updatePageForUser() {
     const filterButtonsContainer = document.getElementById('buttons');
     // Bandeau noir Mode Edition
     const adminBanner = document.getElementById('admin-banner');
+    // Bouton "modifier"
+    const modifyButton = document.getElementById('modify-button');
     if (token) {
         loginButton.textContent = 'Logout';
         filterButtonsContainer.style.display = 'none';
         adminBanner.style.display = 'block';
+        modifyButton.style.display = 'flex';
+    }
+    else {
+        loginButton.textContent = 'Login';
+        modifyButton.style.display = 'none';
     }
 }
 
@@ -134,12 +141,7 @@ function updatePageForUser() {
 
 function initEventListener() {
     // Ajout de l'EventListener pour le bouton "se connecter"
-    loginButton.addEventListener('click', function (event) {
-        // Empecher le rechargement de la page
-        event.preventDefault();
-        // Appeller la fonction login lorsque le bouton est cliqué
-        login();
-    });
+    
     logoutButton.addEventListener('click', logout);
 }
 
