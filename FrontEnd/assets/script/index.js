@@ -27,6 +27,17 @@ async function renderWorks(works) {
     galleryDiv.innerHTML = html;
 }
 
+// Pour afficher les images des Works dans la modale
+async function renderWorksInModal(works) {
+    let html = '';
+    works.forEach(work => {
+      html += `<img src="${work.imageUrl}" alt="${work.title}" class="modal-image">`;
+    });
+  
+    let galleryDiv = document.getElementById('modal-gallery');
+    galleryDiv.innerHTML = html;
+  }
+
 async function filterWorks(categoryId) {
     let worksToDisplay;
 
@@ -87,6 +98,7 @@ async function renderCategories() {
 // Fonction d'initialisation
 async function initialize() {
     await renderCategories();
+    await renderWorksInModal(allWorks);
 }
 
 // Appeler la fonction d'initialisation
@@ -151,6 +163,7 @@ function initEventListener() {
 function init() {
     initEventListener();
     updatePageForUser();
+    
 }
 
 init();

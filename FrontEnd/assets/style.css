@@ -332,8 +332,9 @@ li:hover {
 }
 
 #myModal {
-	z-index: 1000; /* Pour faire en sorte que la modale passe au dessus de tout les autres elements de la page */
-  }
+	z-index: 1000;
+	/* Pour faire en sorte que la modale passe au dessus de tout les autres elements de la page */
+}
 
 /* Style de la modal */
 .modal {
@@ -343,11 +344,12 @@ li:hover {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0,0,0,0.5); /* Fond semi-transparent pour assombrir le reste de la page */
-  }
-  
-  /* Style du contenu de la modale */
-  .modal-content {
+	background-color: rgba(0, 0, 0, 0.5);
+	/* Fond semi-transparent pour assombrir le reste de la page */
+}
+
+/* Style du contenu de la modale */
+.modal-content {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -357,17 +359,79 @@ li:hover {
 	border-radius: 10px;
 	width: 80%;
 	max-width: 725px;
-  }
-  
-  /* Bouton pour fermer la modale */
-  .close {
+}
+
+.modal-content h2 {
+	font-family: 'Work Sans';
+	text-align: center;
+	font-size: 26px;
+	font-weight: 400;
+	margin-top: 20px;
+	margin-bottom: 30px;
+	color: black;
+}
+
+/* Bouton pour fermer la modale */
+.close {
 	position: absolute;
 	top: 0;
 	right: 0;
+	margin-top: 5px;
+	margin-right: 5px;
 	font-size: 24px;
 	padding: 10px;
 	cursor: pointer;
-  }
+}
+
+/* Galerie de photos */
+
+.modal-gallery {
+	display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 2px; 
+	margin-left: 70px;
+	margin-right: 70px;
+}
+
+.modal-gallery img {
+	width: 100px;
+	height: 137px;
+	-o-object-fit: cover;
+	object-fit: cover;
+	margin-bottom: 5px;
+}
+
+/* Bordure avant boutton */
+
+.modal-border {
+	margin-top: 40px;
+	margin-bottom: 30px;
+	margin-left: 20px;
+	background-color: #B3B3B3;
+	height: 1px;
+	width: 95%;
+}
+
+/* Bouton pour la modale */
+
+.modal-btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal-btn button {
+	padding: 10px 20px;
+	margin: 5px;
+	border: 2px solid #1D6154;
+	border-radius: 20px;
+	background-color: #1D6154;
+	font-family: 'Work Sans';
+	font-size: 17px;
+	font-weight: bolder;
+	color: #fffef8;
+	cursor: pointer;
+}
 
 #contact {
 	width: 50%;
