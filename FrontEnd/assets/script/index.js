@@ -151,6 +151,8 @@ function updatePageForUser() {
 
 const modal = document.getElementById('myModal');
 const closeBtn = document.getElementsByClassName('close')[0];
+// Sélectionner le bouton "Modifier"
+const modifyButton = document.getElementById('modify-button');
 
 // Gestionnaire d'événement pour le clic sur la croix
 closeBtn.addEventListener('click', function() {
@@ -164,6 +166,12 @@ window.addEventListener('click', function(event) {
     }
 });
 
+
+// Gestionnaire d'événement pour le clic sur le bouton "modifier"
+modifyButton.addEventListener('click', function() {
+    // Afficher la modal en changeant le style display
+    modal.style.display = 'block';
+});
 
 
 function initEventListener() {

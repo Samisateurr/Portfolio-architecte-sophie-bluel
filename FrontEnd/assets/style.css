@@ -338,7 +338,7 @@ li:hover {
 
 /* Style de la modal */
 .modal {
-	/*display: none; /*Cachez la modal par défaut */
+	display: none; /*Cachez la modal par défaut */
 	position: fixed;
 	top: 0;
 	left: 0;
