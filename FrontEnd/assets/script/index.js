@@ -149,6 +149,21 @@ function updatePageForUser() {
     }
 }
 
+const modal = document.getElementById('myModal');
+const closeBtn = document.getElementsByClassName('close')[0];
+
+// Gestionnaire d'événement pour le clic sur la croix
+closeBtn.addEventListener('click', function() {
+    modal.style.display = 'none';
+});
+
+// Gestionnaire d'événement pour le clic en dehors de la modal
+window.addEventListener('click', function(event) {
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+
 
 
 function initEventListener() {
