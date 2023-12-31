@@ -31,7 +31,10 @@ async function renderWorks(works) {
 async function renderWorksInModal(works) {
     let html = '';
     works.forEach(work => {
-      html += `<img src="${work.imageUrl}" alt="${work.title}" class="modal-image">`;
+        html += `<div class="modal-image-container">
+        <img src="${work.imageUrl}" alt="${work.title}" class="modal-image">
+        <i class="fa-solid fa-trash-can modal-delete-icon" data-work-id="${work.id}"></i>
+     </div>`;
     });
   
     let galleryDiv = document.getElementById('modal-gallery');

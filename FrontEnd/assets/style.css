@@ -371,6 +371,28 @@ li:hover {
 	color: black;
 }
 
+/* Style pour le conteneur de chaque image dans la modale */
+.modal-image-container {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+/* Style pour l'icône "poubelle" dans chaque image */
+.modal-delete-icon {
+    position: absolute;
+    top: 10px;
+    right: 23px;
+    color: white;
+	background: black;
+	padding: 5px;
+	border-radius: 2px;
+    cursor: pointer;
+}
+
+.modal-delete-icon:hover {
+	transform: scale(1.2);
+}
+
 /* Bouton pour fermer la modale */
 .close {
 	position: absolute;
