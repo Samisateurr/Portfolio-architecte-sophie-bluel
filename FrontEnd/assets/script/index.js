@@ -1,7 +1,18 @@
 let allWorks; // Variable pour stocker toutes les œuvres
 
-// Ajouter un EventListener au bouton de déconnexion
+const token = localStorage.getItem('token');
+
+// Bouton de déconnexion
 const logoutButton = document.getElementById('log-button');
+
+// Sélectionner la modale
+const modal = document.getElementById('myModal');
+// Sélectionner la bouton pour fermer la modale
+const closeBtn = document.getElementsByClassName('close')[0];
+// Sélectionner le bouton "Modifier"
+const modifyButton = document.getElementById('modify-button');
+
+
 
 async function getWorks() {
     let url = 'http://localhost:5678/api/works';
@@ -36,10 +47,58 @@ async function renderWorksInModal(works) {
         <i class="fa-solid fa-trash-can modal-delete-icon" data-work-id="${work.id}"></i>
      </div>`;
     });
-  
+
     let galleryDiv = document.getElementById('modal-gallery');
     galleryDiv.innerHTML = html;
-  }
+
+    // Appel de la fonction pour supprimer un work
+    addDeleteEventListeners();
+}
+
+// Fonction pour ajouter un EventListener aux icônes de poubelle
+function addDeleteEventListeners() {
+    // EventListener pour chaque icône de poubelle
+    document.querySelectorAll('.modal-delete-icon').forEach(icon => {
+        icon.addEventListener('click', function (event) {
+            // Obtenir l'ID du work correspondant
+            const workId = event.target.dataset.workId;
+
+
+            // Ajouter un console.log pour voir si la fonction deleteWork est appelée
+            console.log('Clic sur icône de poubelle avec ID du work :', workId);
+
+
+            // Appeler la fonction pour supprimer le travail
+            deleteWork(workId, token);
+        });
+    });
+}
+
+// Fonction pour supprimer un projet 
+async function deleteWork(workId) {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + token
+            },
+        });
+
+        if (response.status === 200) {
+            // Actualiser la galerie après la suppression réussie
+            const updatedWorks = await getWorks();
+            renderWorksInModal(updatedWorks);
+
+        } else {
+            // Gérer les autres codes de réponse 
+            console.error('Échec de la suppression');
+        }
+    } catch (error) {
+        console.error('Erreur lors de la requête :', error);
+    }
+}
 
 async function filterWorks(categoryId) {
     let worksToDisplay;
@@ -152,44 +211,40 @@ function updatePageForUser() {
     }
 }
 
-const modal = document.getElementById('myModal');
-const closeBtn = document.getElementsByClassName('close')[0];
-// Sélectionner le bouton "Modifier"
-const modifyButton = document.getElementById('modify-button');
 
-// Gestionnaire d'événement pour le clic sur la croix
-closeBtn.addEventListener('click', function() {
-    modal.style.display = 'none';
-});
-
-// Gestionnaire d'événement pour le clic en dehors de la modal
-window.addEventListener('click', function(event) {
-    if (event.target === modal) {
-        modal.style.display = 'none';
-    }
-});
-
-
-// Gestionnaire d'événement pour le clic sur le bouton "modifier"
-modifyButton.addEventListener('click', function() {
-    // Afficher la modal en changeant le style display
-    modal.style.display = 'block';
-});
 
 
 function initEventListener() {
-    // Ajout de l'EventListener pour le bouton "se connecter"
-    
+    // EventListener pour le bouton "se connecter"
     logoutButton.addEventListener('click', logout);
+
+    // EventListener pour le clic sur la croix
+    closeBtn.addEventListener('click', function () {
+        modal.style.display = 'none';
+    });
+
+    // EventListener pour le clic en dehors de la modal
+    window.addEventListener('click', function (event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // EventListener pour le clic sur le bouton "modifier"
+    modifyButton.addEventListener('click', function () {
+        // Afficher la modal en changeant le style display
+        modal.style.display = 'block';
+    });
+
 }
-
-
 
 
 function init() {
     initEventListener();
+    // Appeler la fonction pour ajouter les gestionnaires d'événements lors de l'initialisation
+    addDeleteEventListeners();
     updatePageForUser();
-    
+
 }
 
 init();

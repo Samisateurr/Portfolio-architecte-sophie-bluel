@@ -428,7 +428,7 @@ li:hover {
 
 .modal-border {
 	margin-top: 40px;
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 	margin-left: 20px;
 	background-color: #B3B3B3;
 	height: 1px;
@@ -443,7 +443,7 @@ li:hover {
 	align-items: center;
 }
 
-.modal-btn button {
+.modal-button {
 	padding: 10px 20px;
 	margin: 5px;
 	border: 2px solid #1D6154;
@@ -454,6 +454,10 @@ li:hover {
 	font-weight: bolder;
 	color: #fffef8;
 	cursor: pointer;
+}
+
+.modal-button:hover {
+	transform: scale(1.1);
 }
 
 #contact {
@@ -567,4 +571,9 @@ footer nav ul {
 	width: 190px;
 	text-align: center;
 	border-radius: 60px;
+}
+
+#login input[type="submit"]:hover {
+	transform: scale(1.1);
+	cursor: pointer;
 }
