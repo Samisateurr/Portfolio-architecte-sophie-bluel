@@ -11,6 +11,10 @@ const modal = document.getElementById('myModal');
 const closeBtn = document.getElementsByClassName('close')[0];
 // Sélectionner le bouton "Modifier"
 const modifyButton = document.getElementById('modify-button');
+// Sélectionner le bouton "ajouter une photo"
+const modalButton = document.querySelector('.modal-button');
+// Titre de la modale
+const modalTitle = document.getElementById('modal-title');
 
 
 
@@ -86,10 +90,13 @@ async function deleteWork(workId) {
             },
         });
 
-        if (response.status === 200) {
+        if (response.ok) {
+            console.log('Work supprimé !');
+
             // Actualiser la galerie après la suppression réussie
             const updatedWorks = await getWorks();
             renderWorksInModal(updatedWorks);
+            renderWorks(updatedWorks);
 
         } else {
             // Gérer les autres codes de réponse 
@@ -99,6 +106,18 @@ async function deleteWork(workId) {
         console.error('Erreur lors de la requête :', error);
     }
 }
+
+//Modale 2
+
+// EventListener pour le bouton de la modale
+modalButton.addEventListener('click', function () {
+    // Changer le titre
+    modalTitle.textContent = 'Ajout photo';
+    // Cacher les works
+
+    // Changez le bouton en "Valider"
+    modalButton.textContent = 'Valider';
+});
 
 async function filterWorks(categoryId) {
     let worksToDisplay;
@@ -248,4 +267,3 @@ function init() {
 }
 
 init();
-
