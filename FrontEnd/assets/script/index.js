@@ -15,6 +15,8 @@ const modifyButton = document.getElementById('modify-button');
 const modalButton = document.querySelector('.modal-button');
 // Titre de la modale
 const modalTitle = document.getElementById('modal-title');
+// Bouton de retour de la modale
+const modalBackButton = document.getElementById('modal-back-btn');
 
 
 
@@ -114,9 +116,23 @@ modalButton.addEventListener('click', function () {
     // Changer le titre
     modalTitle.textContent = 'Ajout photo';
     // Cacher les works
-
+    document.getElementById('modal-gallery').style.display = 'none';
+    // Afficher le bouton de retour
+    modalBackButton.style.display = 'block';
     // Changez le bouton en "Valider"
     modalButton.textContent = 'Valider';
+});
+
+// EventListener pour retourner a la Modale 1
+modalBackButton.addEventListener('click', function () {
+    // Changer le titre
+    modalTitle.textContent = 'Galerie Photo';
+    // Afficher les works
+    document.getElementById('modal-gallery').style.display = 'grid';
+    // Cacher le bouton de retour
+    modalBackButton.style.display = 'none';
+    // Changez le bouton en "Ajouter une photo"
+    modalButton.textContent = 'Ajouter une photo';
 });
 
 async function filterWorks(categoryId) {
