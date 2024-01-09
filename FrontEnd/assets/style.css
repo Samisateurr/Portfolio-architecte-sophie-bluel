@@ -480,6 +480,12 @@ li:hover {
 	transform: scale(1.1);
 }
 
+/* Formulaire d'ajout d'un work */
+
+.work-form {
+	display: none;
+}
+
 #contact {
 	width: 50%;
 	margin: auto;

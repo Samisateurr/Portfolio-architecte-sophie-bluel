@@ -110,6 +110,50 @@ async function deleteWork(workId) {
 }
 
 //Modale 2
+// Fonction pour soumettre le formulaire
+ async function submitForm() {
+    // Récupérez le formulaire
+    const form = document.getElementById('newWorkForm');
+
+    // Créez un objet FormData à partir du formulaire
+    const formData = new FormData(form);
+
+    // Envoyez les données au serveur via une requête POST
+    fetch('http://localhost:5678/api/works', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token
+        },
+    })
+        .then(response => {
+            if (response.ok) {
+                // La requête a réussi, ajout d'actions supplémentaires
+                console.log('Nouveau work ajouté avec succès !');
+                // Actualiser la galerie après ajout réussi
+                renderWorksInModal(updatedWorks);
+                renderWorks(updatedWorks);
+            } else {
+                // La requête a échoué, gérez les erreurs ici
+                console.error('Erreur ajout du nouveau work');
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la requête :', error);
+        });
+}
+
+// Possibilite d'ajout dynamique pour les options de la catégorie provenant de l'API
+// Ajout d'options statiques pour la catégorie
+const categorySelect = document.getElementById('categorySelect');
+const categories = ['Objet', 'Appartements', 'Hotels & restaurants'];
+categories.forEach(category => {
+    const option = document.createElement('option');
+    option.value = category;
+    option.textContent = category;
+    categorySelect.appendChild(option);
+});
 
 // EventListener pour le bouton de la modale
 modalButton.addEventListener('click', function () {
@@ -121,6 +165,12 @@ modalButton.addEventListener('click', function () {
     modalBackButton.style.display = 'block';
     // Changez le bouton en "Valider"
     modalButton.textContent = 'Valider';
+    // Afficher le formulaire 
+    document.getElementsByClassName('work-form')[0].style.display = 'block';
+    if (document.getElementsByClassName('work-form')[0].style.display === 'block') {
+        // Appeler la fonction pour soumettre le formulaire lorsque le bouton est cliqué
+        submitForm();
+    }
 });
 
 // EventListener pour retourner a la Modale 1
@@ -133,6 +183,8 @@ modalBackButton.addEventListener('click', function () {
     modalBackButton.style.display = 'none';
     // Changez le bouton en "Ajouter une photo"
     modalButton.textContent = 'Ajouter une photo';
+    // Cacher le Formulaire
+    document.getElementsByClassName('work-form')[0].style.display = 'none';
 });
 
 async function filterWorks(categoryId) {

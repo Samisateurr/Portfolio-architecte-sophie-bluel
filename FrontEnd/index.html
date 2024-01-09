@@ -47,6 +47,30 @@
 				<div id="modal-gallery" class="modal-gallery"></div>
 				<div class="modal-border"></div>
 				<div class="modal-btn"><button class="modal-button">Ajouter une photo</button></div>
+				<form id="newWorkForm" class="work-form">
+					<!-- Champ pour ajouter une photo -->
+					<div>
+						<label for="photoInput">Ajouter une photo :</label>
+						<input type="file" id="photoInput" name="photo" accept="image/*">
+					</div>
+				
+					<!-- Champ pour le titre du work -->
+					<div>
+						<label for="titleInput">Titre :</label>
+						<input type="text" id="titleInput" name="title">
+					</div>
+				
+					<!-- Champ pour choisir la catégorie -->
+					<div>
+						<label for="categorySelect">Catégorie :</label>
+						<select id="categorySelect" name="category">
+							<!-- Ajoutez ici les options de catégorie dynamiquement -->
+						</select>
+					</div>
+				
+					<!-- Bouton pour soumettre le formulaire ajoute dynamiquement avec javascript -->
+					
+				</form>
 			</div>
 
 		</div>
