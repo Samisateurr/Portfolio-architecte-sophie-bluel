@@ -338,7 +338,8 @@ li:hover {
 
 /* Style de la modal */
 .modal {
-	display: none; /*Cachez la modal par défaut */
+	display: none;
+	/*Cachez la modal par défaut */
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -373,20 +374,20 @@ li:hover {
 
 /* Style pour le conteneur de chaque image dans la modale */
 .modal-image-container {
-    position: relative;
-    margin-bottom: 10px;
+	position: relative;
+	margin-bottom: 10px;
 }
 
 /* Style pour l'icône "poubelle" dans chaque image */
 .modal-delete-icon {
-    position: absolute;
-    top: 10px;
-    right: 23px;
-    color: white;
+	position: absolute;
+	top: 10px;
+	right: 23px;
+	color: white;
 	background: black;
 	padding: 5px;
 	border-radius: 2px;
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .modal-delete-icon:hover {
@@ -414,8 +415,8 @@ li:hover {
 
 .modal-gallery {
 	display: grid;
-    grid-template-columns: repeat(5, 1fr); 
-    gap: 2px; 
+	grid-template-columns: repeat(5, 1fr);
+	gap: 2px;
 	margin-left: 70px;
 	margin-right: 70px;
 }
@@ -485,6 +486,96 @@ li:hover {
 .work-form {
 	display: none;
 }
+
+.image-input-container {
+	background-color: #e8f1f6;
+	border-radius: 5px;
+	padding: 10px 200px 10px 200px;
+	margin: 0px 120px 0px 120px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 9px;
+	height: 180px;
+}
+
+.image-input-container button {
+	width: 200px;
+	color: #306685;
+	background-color: #cbd6dc;
+	cursor: pointer;
+}
+
+.image-input-container p {
+	width: 135px;
+}
+
+#image-preview {
+	height: 100%;
+	object-fit: cover;
+}
+
+#image-error {
+	color: red;
+	height: 10px;
+	text-align: center;
+}
+
+#select-error,
+#title-error {
+	color: red;
+	text-align: center;
+	padding-top: 10px;
+}
+
+
+#image-input {
+	display: none;
+}
+
+.custom-file-input {
+	padding: 10px 20px;
+	margin: 5px;
+	border: 2px solid #CBD6DC;
+	border-radius: 20px;
+	width: 160px;
+	background-color: #CBD6DC;
+	font-family: 'Work Sans';
+	font-size: 17px;
+	font-weight: bolder;
+	color: #306685;
+	cursor: pointer;
+	text-align: center;
+}
+
+.custom-file-input:hover {
+	color: #cbd6dc;
+	background-color: #306685;
+}
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding-bottom: 5px;
+	font-weight: 800;
+	padding-left: 120px;
+    padding-right: 120px;
+}
+
+.form-group input,
+select {
+	border: none;
+	box-shadow: 0px 4px 14px 0 rgba(0, 0, 0, 0.09);
+	height: 40px;
+	padding-left: 7px;
+}
+
+.form-group input:focus {
+	outline: none;
+	border: none;
+}
+
 
 #contact {
 	width: 50%;

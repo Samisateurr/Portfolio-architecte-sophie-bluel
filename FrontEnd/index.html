@@ -45,32 +45,30 @@
 				<span class="close">&times;</span>
 				<h2 id="modal-title">Galerie Photo</h2>
 				<div id="modal-gallery" class="modal-gallery"></div>
-				<div class="modal-border"></div>
-				<div class="modal-btn"><button class="modal-button">Ajouter une photo</button></div>
+
 				<form id="newWorkForm" class="work-form">
 					<!-- Champ pour ajouter une photo -->
-					<div>
-						<label for="photoInput">Ajouter une photo :</label>
-						<input type="file" id="photoInput" name="photo" accept="image/*">
+					<div class="image-input-container">
+						<input id="image-input" type="file" />
+						<img id="image-preview" src="./assets/icons/picture-svgrepo-com 1.png" alt="image icon" />
+						<label for="image-input" id="add-photo-label" class="custom-file-input">
+							+ Ajouter photo
+						</label>
+						<p id="image-description">jpg, png : 4mo max</p>
 					</div>
-				
-					<!-- Champ pour le titre du work -->
-					<div>
-						<label for="titleInput">Titre :</label>
-						<input type="text" id="titleInput" name="title">
+
+					<div class="form-group">
+						<span id="image-error"></span>
+						<span id="title-error"></span>
+						<label for="text-input">Titre</label>
+						<input id="text-input" type="text" />
+						<label for="select">Catégorie</label>
+						<select name="select" id="categorySelect"></select>
+						<span id="select-error"></span>
 					</div>
-				
-					<!-- Champ pour choisir la catégorie -->
-					<div>
-						<label for="categorySelect">Catégorie :</label>
-						<select id="categorySelect" name="category">
-							<!-- Ajoutez ici les options de catégorie dynamiquement -->
-						</select>
-					</div>
-				
-					<!-- Bouton pour soumettre le formulaire ajoute dynamiquement avec javascript -->
-					
 				</form>
+				<div class="modal-border"></div>
+				<div class="modal-btn"><button class="modal-button">Ajouter une photo</button></div>
 			</div>
 
 		</div>

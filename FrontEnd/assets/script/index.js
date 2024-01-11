@@ -111,40 +111,109 @@ async function deleteWork(workId) {
 
 //Modale 2
 // Fonction pour soumettre le formulaire
- async function submitForm() {
+async function submitForm() {
     // Récupérez le formulaire
     const form = document.getElementById('newWorkForm');
 
     // Créez un objet FormData à partir du formulaire
     const formData = new FormData(form);
 
+    // Récupérez les valeurs des champs du formulaire
+    const image = document.getElementById('image-input').files[0];
+    const title = document.getElementById('text-input').value;
+    const categoryId = document.getElementById('categorySelect').value;
+
+    // Ajoutez les valeurs des champs spécifiques à l'objet FormData existant
+    formData.append("image", image);
+    formData.append("title", title);
+    formData.append("category", categoryId);
+
+    // Récupérez le token
+    const token = localStorage.getItem('token');
+
+    // Ajoutez cette ligne pour afficher le token dans la console avant l'envoi de la requête
+    console.log("Token avant envoi de la requête :", token);
+
     // Envoyez les données au serveur via une requête POST
-    fetch('http://localhost:5678/api/works', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Content-Type': 'application/json',
-            "Authorization": "Bearer " + token
-        },
-    })
-        .then(response => {
-            if (response.ok) {
-                // La requête a réussi, ajout d'actions supplémentaires
-                console.log('Nouveau work ajouté avec succès !');
-                // Actualiser la galerie après ajout réussi
-                renderWorksInModal(updatedWorks);
-                renderWorks(updatedWorks);
-            } else {
-                // La requête a échoué, gérez les erreurs ici
-                console.error('Erreur ajout du nouveau work');
-            }
-        })
-        .catch(error => {
-            console.error('Erreur lors de la requête :', error);
+    try {
+        const response = await fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                "Authorization": "Bearer " + token
+            },
         });
+
+        if (response.ok) {
+            // La requête a réussi, ajout d'actions supplémentaires
+            console.log('Nouveau work ajouté avec succès !');
+            // Actualiser la galerie après ajout réussi
+            const updatedWorks = await getWorks(); // Assurez-vous que getWorks est défini dans votre code
+            renderWorksInModal(updatedWorks);
+            renderWorks(updatedWorks);
+        } else {
+            // La requête a échoué, gérez les erreurs ici
+            console.error('Erreur ajout du nouveau work');
+        }
+    } catch (error) {
+        console.error('Erreur lors de la requête :', error);
+    }
 }
 
-// Possibilite d'ajout dynamique pour les options de la catégorie provenant de l'API
+// Apercu de l'image avant ajout !
+
+// Sélectionnez l'élément d'entrée de fichier
+const fileInput = document.getElementById('image-input');
+
+// Ajoutez un gestionnaire d'événements pour écouter les changements
+fileInput.addEventListener('change', handleFileInputChange);
+
+function handleFileInputChange() {
+    // Sélectionnez l'élément d'aperçu de l'image
+    const imagePreview = document.getElementById('image-preview');
+
+    // Sélectionnez le label "Ajouter photo"
+    const addPhotoLabel = document.getElementById('add-photo-label');
+
+    // Sélectionnez l'élément image-description
+    const imageDescription = document.getElementById('image-description');
+
+    // Vérifiez s'il y a un fichier sélectionné
+    if (fileInput.files.length > 0) {
+        // Cachez l'élément image-description
+        imageDescription.style.display = 'none';
+    } else {
+        // Affichez l'élément image-description s'il n'y a pas de fichier sélectionné
+        imageDescription.style.display = 'block';
+    }
+
+
+    // Vérifiez s'il y a un fichier sélectionné
+    if (fileInput.files.length > 0) {
+        // Obtenez le fichier sélectionné
+        const selectedFile = fileInput.files[0];
+
+        // Créez un objet URL pour l'aperçu de l'image
+        const imageURL = URL.createObjectURL(selectedFile);
+
+        // Mettez à jour l'attribut src de l'élément d'aperçu de l'image
+        imagePreview.src = imageURL;
+
+        // Affichez l'élément d'aperçu de l'image
+        imagePreview.style.display = 'block';
+
+        // Cachez le label "Ajouter photo"
+        addPhotoLabel.style.display = 'none';
+    } else {
+        // Cachez l'élément d'aperçu de l'image s'il n'y a pas de fichier sélectionné
+        imagePreview.style.display = 'none';
+
+        // Affichez le label "Ajouter photo"
+        addPhotoLabel.style.display = 'block';
+    }
+}
+
+// Possibilité d'ajout dynamique pour les options de la catégorie provenant de l'API
 // Ajout d'options statiques pour la catégorie
 const categorySelect = document.getElementById('categorySelect');
 const categories = ['Objet', 'Appartements', 'Hotels & restaurants'];
