@@ -112,51 +112,57 @@ async function deleteWork(workId) {
 //Modale 2
 // Fonction pour soumettre le formulaire
 async function submitForm() {
-    // Récupérez le formulaire
-    const form = document.getElementById('newWorkForm');
+    // Récupérez l'élément 'image-input'
+    const photoInput = document.getElementById('image-input');
 
-    // Créez un objet FormData à partir du formulaire
-    const formData = new FormData(form);
+    // Vérifiez si l'élément 'image-input' existe
+    if (photoInput) {
+        // Créez un objet FormData sans le formulaire
+        const formData = new FormData();
 
-    // Récupérez les valeurs des champs du formulaire
-    const image = document.getElementById('image-input').files[0];
-    const title = document.getElementById('text-input').value;
-    const categoryId = document.getElementById('categorySelect').value;
+        // Récupérez les valeurs des champs du formulaire
+        const image = photoInput.files[0];
+        const title = document.getElementById('text-input').value;
+        const categoryId = document.getElementById('categorySelect').value;
 
-    // Ajoutez les valeurs des champs spécifiques à l'objet FormData existant
-    formData.append("image", image);
-    formData.append("title", title);
-    formData.append("category", categoryId);
+        // Ajoutez les valeurs des champs spécifiques à l'objet FormData existant
+        formData.append("image", image);
+        formData.append("title", title);
+        formData.append("category", categoryId);
 
-    // Récupérez le token
-    const token = localStorage.getItem('token');
+        // Afficher le contenu de formData dans la console
+        console.log([...formData]);
 
-    // Ajoutez cette ligne pour afficher le token dans la console avant l'envoi de la requête
-    console.log("Token avant envoi de la requête :", token);
+        const token = localStorage.getItem('token');
 
-    // Envoyez les données au serveur via une requête POST
-    try {
-        const response = await fetch('http://localhost:5678/api/works', {
+         // Afficher le token dans la console avant l'envoi de la requête
+         console.log("Token avant envoi de la requête :", token);
+
+        // Envoyez les données au serveur via une requête POST
+        fetch('http://localhost:5678/api/works', {
             method: 'POST',
             body: formData,
             headers: {
                 "Authorization": "Bearer " + token
             },
-        });
-
-        if (response.ok) {
-            // La requête a réussi, ajout d'actions supplémentaires
-            console.log('Nouveau work ajouté avec succès !');
-            // Actualiser la galerie après ajout réussi
-            const updatedWorks = await getWorks(); // Assurez-vous que getWorks est défini dans votre code
-            renderWorksInModal(updatedWorks);
-            renderWorks(updatedWorks);
-        } else {
-            // La requête a échoué, gérez les erreurs ici
-            console.error('Erreur ajout du nouveau work');
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête :', error);
+        })
+            .then(response => {
+                if (response.ok) {
+                    // La requête a réussi, ajout d'actions supplémentaires
+                    console.log('Nouveau work ajouté avec succès !');
+                    // Actualiser la galerie après ajout réussi
+                    renderWorksInModal();
+                    renderWorks();
+                } else {
+                    // La requête a échoué, gérez les erreurs ici
+                    console.error('Erreur ajout du nouveau work');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la requête :', error);
+            });
+    } else {
+        console.error("L'élément 'image-input' n'a pas été trouvé dans le document.");
     }
 }
 
@@ -213,16 +219,41 @@ function handleFileInputChange() {
     }
 }
 
-// Possibilité d'ajout dynamique pour les options de la catégorie provenant de l'API
-// Ajout d'options statiques pour la catégorie
+// Partie pour le choix des categories via l'API
+// Sélectionnez l'élément categorySelect 
 const categorySelect = document.getElementById('categorySelect');
-const categories = ['Objet', 'Appartements', 'Hotels & restaurants'];
-categories.forEach(category => {
-    const option = document.createElement('option');
-    option.value = category;
-    option.textContent = category;
-    categorySelect.appendChild(option);
-});
+
+// Fonction pour récupérer les catégories depuis l'API
+async function getCategoriesFromAPI() {
+    const url = 'http://localhost:5678/api/categories';
+
+    try {
+        const response = await fetch(url);
+        const categories = await response.json();
+        return categories;
+    } catch (error) {
+        console.error('Erreur lors de la récupération des catégories depuis l\'API :', error);
+        return [];
+    }
+}
+
+// Fonction pour ajouter dynamiquement les options de catégorie
+async function addCategoryOptions() {
+    // Récupérez les catégories depuis l'API
+    const categoriesFromAPI = await getCategoriesFromAPI();
+
+    // Ajoutez chaque catégorie en tant qu'option
+    categoriesFromAPI.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id; // Utilisez l'ID comme valeur
+        option.textContent = category.name; // Utilisez le nom comme texte
+        categorySelect.appendChild(option);
+    });
+}
+
+// Appelez la fonction pour ajouter dynamiquement les options de catégorie
+addCategoryOptions();
+
 
 // EventListener pour le bouton de la modale
 modalButton.addEventListener('click', function () {
