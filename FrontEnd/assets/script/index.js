@@ -114,12 +114,21 @@ async function deleteWork(workId) {
     }
 }
 
+function displayErrorMessage(message) {
+    const errorMessageElement = document.getElementById('error-message');
+    errorMessageElement.textContent = message;
+}
+
 // Fonction pour soumettre le formulaire
 async function submitForm() {
     const photoInput = document.getElementById('image-input');
     const errorMessageElement = document.getElementById('error-message'); // Ajout message erreur
 
     if (photoInput) {
+        // Réinitialiser le message d'erreur
+        errorMessageElement.textContent = '';
+        errorMessageElement.style.display = 'none';  // Assurez-vous de masquer le message d'erreur
+
         // Vérifier si un fichier est sélectionné
         if (photoInput.files.length > 0) {
             const formData = new FormData();
@@ -139,54 +148,79 @@ async function submitForm() {
                     formData.append("title", title);
                     formData.append("category", categoryId);
 
-                    console.log([...formData]);
-
                     const token = localStorage.getItem('token');
 
-                    console.log("Token avant envoi de la requête :", token);
+                    // Vérifier les erreurs avant l'envoi de la requête
+                    if (title && categoryId) {
+                        try {
+                            const response = await fetch('http://localhost:5678/api/works', {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    "Authorization": "Bearer " + token
+                                },
+                            });
 
-                    try {
-                        const response = await fetch('http://localhost:5678/api/works', {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                "Authorization": "Bearer " + token
-                            },
-                        });
+                            if (response.ok) {
+                                console.log('Nouveau work ajouté avec succès !');
 
-                        if (response.ok) {
-                            console.log('Nouveau work ajouté avec succès !');
+                                // Mettez à jour la liste des œuvres après l'ajout réussi
+                                updatedWorks = await getWorks();
 
-                            // Mettez à jour la liste des œuvres après l'ajout réussi
-                            updatedWorks = await getWorks();
+                                // Actualiser la galerie après l'ajout réussi
+                                renderWorksInModal(updatedWorks);
+                                renderWorks(updatedWorks);
 
-                            // Actualiser la galerie après l'ajout réussi
-                            renderWorksInModal(updatedWorks);
-                            renderWorks(updatedWorks);
+                                // Réinitialiser les champs du formulaire
+                                titleInput.value = '';
+                                categoryIdSelect.value = '';
+                                photoInput.value = ''; // Réinitialiser la sélection du fichier
+                                handleFileInputChange(); // Réinitialiser l'aperçu de l'image
 
-                            // Réinitialiser les champs du formulaire
-                            titleInput.value = '';
-                            categoryIdSelect.value = '';
-                            photoInput.value = ''; // Réinitialiser la sélection du fichier
-                            handleFileInputChange(); // Réinitialiser l'aperçu de l'image
-
-                            // Masquer la modale après l'ajout réussi
-                            modal.style.display = 'none';
+                                // Masquer la modale après l'ajout réussi
+                                modal.style.display = 'none';
+                            } else {
+                                // La requête a échoué, afficher un message d'erreur
+                                errorMessageElement.textContent = 'Erreur ajout du nouveau work';
+                                errorMessageElement.style.display = 'block';
+                            }
+                        } catch (error) {
+                            console.error('Erreur lors de la requête :', error);
+                            errorMessageElement.textContent = 'Erreur lors de la requête. Veuillez réessayer.';
+                            errorMessageElement.style.display = 'block';
                         }
-                    } catch (error) {
-                        console.error('Erreur lors de la requête :', error);
+                    } else {
+                        // Titre ou catégorie manquants, afficher un message d'erreur
+                        errorMessageElement.textContent = 'Veuillez remplir tous les champs obligatoires.';
+                        errorMessageElement.style.display = 'block';
+                        // Actualiser la page après 2 secondes en cas d'erreur
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
                     }
                 } else {
                     errorMessageElement.textContent = 'Format image non pris en charge. Veuillez sélectionner un fichier au format JPG ou PNG.';
+                    errorMessageElement.style.display = 'block';
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
                 }
             } else {
                 errorMessageElement.textContent = 'La taille du fichier est supérieure à 4 MO. Veuillez sélectionner un fichier de taille inférieure.';
+                errorMessageElement.style.display = 'block';
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3000);
             }
         } else {
-            errorMessageElement.textContent = "L'élément n'a pas été trouvé";
+            errorMessageElement.textContent = "Aucun fichier sélectionné.";
+            errorMessageElement.style.display = 'block';
         }
+    } else {
+        console.error("L'élément 'image-input' n'a pas été trouvé dans le document.");
     }
 }
+
 
 // Apercu de l'image avant ajout !
 
@@ -279,6 +313,7 @@ addCategoryOptions();
 
 // EventListener pour le bouton de la modale
 modalButton.addEventListener('click', function () {
+    
     // Changer le titre
     modalTitle.textContent = 'Ajout photo';
     // Cacher les works
@@ -291,7 +326,7 @@ modalButton.addEventListener('click', function () {
     document.getElementsByClassName('work-form')[0].style.display = 'block';
     // Réinitialiser l'aperçu de l'image avec l'image initiale
     imagePreview.src = initialImagePath;
-
+    
     if (document.getElementsByClassName('work-form')[0].style.display === 'block') {
         // Appeler la fonction pour soumettre le formulaire lorsque le bouton est cliqué
         submitForm();
