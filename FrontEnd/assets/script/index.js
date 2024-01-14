@@ -19,6 +19,9 @@ const modalButton = document.querySelector('.modal-button');
 const modalTitle = document.getElementById('modal-title');
 // Bouton de retour de la modale
 const modalBackButton = document.getElementById('modal-back-btn');
+//test
+const imagePreview = document.getElementById('image-preview');
+const initialImagePath = './assets/icons/picture-svgrepo-com 1.png';
 
 
 
@@ -286,9 +289,14 @@ modalButton.addEventListener('click', function () {
     modalButton.textContent = 'Valider';
     // Afficher le formulaire 
     document.getElementsByClassName('work-form')[0].style.display = 'block';
+    // Réinitialiser l'aperçu de l'image avec l'image initiale
+    imagePreview.src = initialImagePath;
+
     if (document.getElementsByClassName('work-form')[0].style.display === 'block') {
         // Appeler la fonction pour soumettre le formulaire lorsque le bouton est cliqué
         submitForm();
+        // Affichez l'élément d'aperçu de l'image
+        imagePreview.style.display = 'block';
     }
 });
 
@@ -440,9 +448,21 @@ function initEventListener() {
     modifyButton.addEventListener('click', function () {
         // Afficher la modal en changeant le style display
         modal.style.display = 'block';
+        // MODALE 1
+        // Changer le titre
+        modalTitle.textContent = 'Galerie Photo';
+        // Afficher les works
+        document.getElementById('modal-gallery').style.display = 'grid';
+        // Cacher le bouton de retour
+        modalBackButton.style.display = 'none';
+        // Changez le bouton en "Ajouter une photo"
+        modalButton.textContent = 'Ajouter une photo';
+        // Cacher le Formulaire
+        document.getElementsByClassName('work-form')[0].style.display = 'none';
     });
-
 }
+
+
 
 
 function init() {
