@@ -1,4 +1,6 @@
 let allWorks; // Variable pour stocker toutes les œuvres
+let updatedWorks = []; // Déclaration de la variable en dehors des fonctions
+
 
 const token = localStorage.getItem('token');
 
@@ -109,60 +111,77 @@ async function deleteWork(workId) {
     }
 }
 
-//Modale 2
 // Fonction pour soumettre le formulaire
 async function submitForm() {
-    // Récupérez l'élément 'image-input'
     const photoInput = document.getElementById('image-input');
+    const errorMessageElement = document.getElementById('error-message'); // Ajout message erreur
 
-    // Vérifiez si l'élément 'image-input' existe
     if (photoInput) {
-        // Créez un objet FormData sans le formulaire
-        const formData = new FormData();
+        // Vérifier si un fichier est sélectionné
+        if (photoInput.files.length > 0) {
+            const formData = new FormData();
+            const image = photoInput.files[0];
 
-        // Récupérez les valeurs des champs du formulaire
-        const image = photoInput.files[0];
-        const title = document.getElementById('text-input').value;
-        const categoryId = document.getElementById('categorySelect').value;
+            // Vérifier la taille du fichier (limite à 4 MO)
+            if (image.size <= 4 * 1024 * 1024) {
+                // Vérifier le format du fichier (jpg ou png)
+                if (image.type === 'image/jpeg' || image.type === 'image/png') {
+                    const titleInput = document.getElementById('text-input');
+                    const categoryIdSelect = document.getElementById('categorySelect');
 
-        // Ajoutez les valeurs des champs spécifiques à l'objet FormData existant
-        formData.append("image", image);
-        formData.append("title", title);
-        formData.append("category", categoryId);
+                    const title = titleInput.value;
+                    const categoryId = categoryIdSelect.value;
 
-        // Afficher le contenu de formData dans la console
-        console.log([...formData]);
+                    formData.append("image", image);
+                    formData.append("title", title);
+                    formData.append("category", categoryId);
 
-        const token = localStorage.getItem('token');
+                    console.log([...formData]);
 
-         // Afficher le token dans la console avant l'envoi de la requête
-         console.log("Token avant envoi de la requête :", token);
+                    const token = localStorage.getItem('token');
 
-        // Envoyez les données au serveur via une requête POST
-        fetch('http://localhost:5678/api/works', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                "Authorization": "Bearer " + token
-            },
-        })
-            .then(response => {
-                if (response.ok) {
-                    // La requête a réussi, ajout d'actions supplémentaires
-                    console.log('Nouveau work ajouté avec succès !');
-                    // Actualiser la galerie après ajout réussi
-                    renderWorksInModal();
-                    renderWorks();
+                    console.log("Token avant envoi de la requête :", token);
+
+                    try {
+                        const response = await fetch('http://localhost:5678/api/works', {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                "Authorization": "Bearer " + token
+                            },
+                        });
+
+                        if (response.ok) {
+                            console.log('Nouveau work ajouté avec succès !');
+
+                            // Mettez à jour la liste des œuvres après l'ajout réussi
+                            updatedWorks = await getWorks();
+
+                            // Actualiser la galerie après l'ajout réussi
+                            renderWorksInModal(updatedWorks);
+                            renderWorks(updatedWorks);
+
+                            // Réinitialiser les champs du formulaire
+                            titleInput.value = '';
+                            categoryIdSelect.value = '';
+                            photoInput.value = ''; // Réinitialiser la sélection du fichier
+                            handleFileInputChange(); // Réinitialiser l'aperçu de l'image
+
+                            // Masquer la modale après l'ajout réussi
+                            modal.style.display = 'none';
+                        }
+                    } catch (error) {
+                        console.error('Erreur lors de la requête :', error);
+                    }
                 } else {
-                    // La requête a échoué, gérez les erreurs ici
-                    console.error('Erreur ajout du nouveau work');
+                    errorMessageElement.textContent = 'Format image non pris en charge. Veuillez sélectionner un fichier au format JPG ou PNG.';
                 }
-            })
-            .catch(error => {
-                console.error('Erreur lors de la requête :', error);
-            });
-    } else {
-        console.error("L'élément 'image-input' n'a pas été trouvé dans le document.");
+            } else {
+                errorMessageElement.textContent = 'La taille du fichier est supérieure à 4 MO. Veuillez sélectionner un fichier de taille inférieure.';
+            }
+        } else {
+            errorMessageElement.textContent = "L'élément n'a pas été trouvé";
+        }
     }
 }
 

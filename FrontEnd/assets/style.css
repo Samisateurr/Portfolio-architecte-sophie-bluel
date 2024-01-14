@@ -244,7 +244,7 @@ li:hover {
 
 .gallery img {
 	width: 100%;
-
+	height: 480px;
 }
 
 /* Partie pour les boutons de filtre */
@@ -515,17 +515,10 @@ li:hover {
 	object-fit: cover;
 }
 
-#image-error {
+#error-message {
 	color: red;
 	height: 10px;
 	text-align: center;
-}
-
-#select-error,
-#title-error {
-	color: red;
-	text-align: center;
-	padding-top: 10px;
 }
 
 
