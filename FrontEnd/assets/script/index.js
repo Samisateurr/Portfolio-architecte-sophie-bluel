@@ -342,6 +342,7 @@ modalButton.addEventListener('click', function () {
         // Affichez l'élément d'aperçu de l'image
         imagePreview.style.display = 'block';
     }
+    
 });
 
 // EventListener pour retourner a la Modale 1
